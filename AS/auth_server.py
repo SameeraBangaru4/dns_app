@@ -1,7 +1,7 @@
 import socket
 import os
 
-DNS_DB_File = "dns_records.txt"
+DNS_DB_File = "/AS/dns_records.txt"
 
 UDP_PORT = 53533
 def save_record(name, value, record_type, ttl):
@@ -30,7 +30,7 @@ def parse_message(message):
     return data
 def start_as():
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    sock.bind(("", UDP_PORT))
+    sock.bind(("0.0.0.0", UDP_PORT))
 
     print(f"Authoritative Server running on UDP Port {UDP_PORT}")
 

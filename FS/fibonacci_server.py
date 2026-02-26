@@ -51,7 +51,7 @@ def get_details():
             return jsonify({'error':"Error in data"}), 400
     
         registration_with_as(fs_hostname, fs_ip, as_ip, as_port)
-        return "Regitered", 201
+        return "Registered", 201
     else:
         return jsonify({'error': "Data must be in json format"}), 400
 
