@@ -5,8 +5,37 @@ DNS_DB_File = "/AS/dns_records.txt"
 
 UDP_PORT = 53533
 def save_record(name, value, record_type, ttl):
-    with open(DNS_DB_File, "a") as f:
-        f.write(f"{record_type},{name},{value},{ttl}\n")
+    records = []
+    record_exists = False
+
+    # Create file if it doesn't exist
+    if not os.path.exists(DNS_DB_File):
+        open(DNS_DB_File, "w").close()
+
+    # Read existing records
+    with open(DNS_DB_File, "r") as f:
+        for line in f:
+            r_type, r_name, r_value, r_ttl = line.strip().split(",")
+
+            if r_type == record_type and r_name == name:
+                # Update existing record
+                records.append(f"{record_type},{name},{value},{ttl}\n")
+                record_exists = True
+            else:
+                records.append(line)
+
+    # If record was not found, add it
+    if not record_exists:
+        records.append(f"{record_type},{name},{value},{ttl}\n")
+
+    # Write back to file
+    with open(DNS_DB_File, "w") as f:
+        f.writelines(records)
+
+    if record_exists:
+        print("Record updated")
+    else:
+        print("Record added")
 
 def lookup_record(name, record_type):
 
